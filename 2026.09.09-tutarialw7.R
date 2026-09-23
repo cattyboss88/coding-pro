@@ -11,7 +11,7 @@ dosage %>%
   ggplot(aes(x = dose_mg, y = weight_lost_g, colour = mouse_strain)) +
   geom_point() +
   # nicer colour palette
-  scale_colour_manual(values = c("#ab2929", "#73b7bd", "#ccd65c")) +
+  scale_colour_manual(values = c("red", "#73b7bd", "#ccd65c")) +
   # theme and labels
   theme_classic() +
   labs(
@@ -20,3 +20,22 @@ dosage %>%
     colour = "Mouse strain",
     title = "Relationship between drug dosage and weight lost"
   )
+dosage %>%
+  # first convert drug_dose_g into mg
+  # to make it easier to read
+  mutate(dose_mg = drug_dose_g * 10000) %>%
+  mutate(percent_wl = (weight_lost_g / initial_weight_g) * 100) %>%
+  # now make a scatterplot
+  ggplot(aes(x = dose_mg, y = percent_wl, colour = mouse_strain)) +
+  geom_point() +
+  # nicer colour palette
+  scale_colour_manual(values = c("#ab2929", "#73b7bd", "#ccd65c")) +
+  # theme and labels
+  theme_classic() +
+  labs(
+    x = "Drug dosage (mg)",
+    y = "Weight lost (mg)",
+    colour = "Mouse strain",
+    title = "Relationship between drug dosage and weight lost"
+  ) +
+  facet_wrap(~sex)
